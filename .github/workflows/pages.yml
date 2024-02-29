@@ -11,7 +11,6 @@ on:
 env:
   MLM_LICENSE_TOKEN: ${{ secrets.MLM_LICENSE_TOKEN }}
   PRODUCT_LIST: MATLAB MATLAB_Test MATLAB_Compiler MATLAB_Compiler_SDK
-  MW_MATLAB_BATCH_URL_OVERRIDE: https://mw-ci-static-dev.s3.amazonaws.com/matlab-batch/v2/ # IGNORE - HOPEFULLY NOT BE IN FLORIDA
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
