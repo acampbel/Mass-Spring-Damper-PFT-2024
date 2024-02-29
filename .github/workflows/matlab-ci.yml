@@ -99,36 +99,36 @@ jobs:
           path: release/Mass-Spring-Damper.mltbx
 
 
-  # deploy-service:
-  #   # This job executes only after a successful completion of 'mex-and-unittests' job
-  #   needs: mex-and-unittests
-  # 
-  # 
-  #   runs-on: ubuntu-latest
-  # 
-  #   steps:
-  #     - uses: actions/checkout@v4
-  # 
-  #     - name: Setup MATLAB
-  #       uses: matlab-actions/setup-matlab@v2-prerelease
-  #       with:
-  #         release: latest-including-prerelease
-  #         cache: true
-  #         products: ${{ env.PRODUCT_LIST }}
-  # 
-  #     - name: Download Linux artifacts(to benefit from incremental build)
-  #       uses: actions/download-artifact@v4
-  #       with:   
-  #         pattern: build-artifacts-ubuntu-latest
-  #         merge-multiple: true
-  # 
-  #     - name: Build the ctf archive and run equivalence integration tests
-  #       uses: matlab-actions/run-build@v2
-  #       with:
-  #         tasks: deploy
-  # 
-  #     - name: Upload Production Server Archive 
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: Mass-Spring-Damper Production Server Archive 
-  #         path: results/ctf-archive
+  deploy-service:
+    # This job executes only after a successful completion of 'mex-and-unittests' job
+    needs: mex-and-unittests
+
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MATLAB
+        uses: matlab-actions/setup-matlab@v2-prerelease
+        with:
+          release: latest-including-prerelease
+          cache: true
+          products: ${{ env.PRODUCT_LIST }}
+
+      - name: Download Linux artifacts(to benefit from incremental build)
+        uses: actions/download-artifact@v4
+        with:   
+          pattern: build-artifacts-ubuntu-latest
+          merge-multiple: true
+
+      - name: Build the ctf archive and run equivalence integration tests
+        uses: matlab-actions/run-build@v2
+        with:
+          tasks: deploy
+
+      - name: Upload Production Server Archive 
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mass-Spring-Damper Production Server Archive 
+          path: results/ctf-archive
