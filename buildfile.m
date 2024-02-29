@@ -193,6 +193,8 @@ mlxFiles = context.Task.Inputs.paths;
 htmlFiles = context.Task.Outputs.paths;
 for idx = 1:numel(mlxFiles)
     disp("Building html from " + mlxFiles(idx))
+    disp("  First confirming it runs")
+    run(mlxFiles(idx));
     export(mlxFiles(idx), htmlFiles(idx), Run=true);
 end
 end
