@@ -32,7 +32,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -48,10 +48,6 @@ jobs:
           cache: true
           products: ${{env.PRODUCT_LIST }}
       
-      - name: Start display server on linux (required for building doc)
-        run: |
-          Xvfb :99 & 
-          echo "DISPLAY=:99" >> $GITHUB_ENV
 
       # Build the toolbox
       - name: Run the build to produce workshop html pages
