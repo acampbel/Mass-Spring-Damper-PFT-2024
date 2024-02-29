@@ -1,0 +1,134 @@
+# This is a basic workflow to help you get started with MATLAB Actions
+
+name: MATLAB Build
+
+# Controls when the action will run. 
+on: 
+  push:                       # Runs on push events
+  pull_request:               # Runs on pull requests
+  workflow_dispatch:          # Allows you to run this workflow manually from the Actions tab
+
+env:
+  MLM_LICENSE_TOKEN: ${{ secrets.MLM_LICENSE_TOKEN }}
+  PRODUCT_LIST: MATLAB MATLAB_Test MATLAB_Compiler MATLAB_Compiler_SDK
+  MW_MATLAB_BATCH_URL_OVERRIDE: https://mw-ci-static-dev.s3.amazonaws.com/matlab-batch/v2/ # Not needed for production R2024a
+
+jobs:
+
+  mex-and-unittests:
+    # This job will run for all the OS present in the matrix
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-13]
+     
+    # The type of runner that the job will run on
+    runs-on: ${{ matrix.os }}
+ 
+    steps:
+      - uses: actions/checkout@v4
+       
+      - name: Setup MATLAB
+        uses: matlab-actions/setup-matlab@v2-prerelease
+        with:
+          release: latest-including-prerelease
+          cache: true
+          products: ${{ env.PRODUCT_LIST }}
+ 
+      - name: Run ${{ matrix.os }} build to create MEX files and run unit tests
+        uses: matlab-actions/run-build@v2
+        with:
+          tasks: test
+ 
+      - name: Uploads mex files, test results, and build traces
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts-${{ matrix.os }}
+          path: |
+            toolbox/**/*
+            results/
+            .buildtool/
+            
+  release-toolbox:
+    # This job executes only after a successful completion of 'mex-and-unittests' job
+    needs: mex-and-unittests
+
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - uses: actions/checkout@v4
+ 
+      - name: Setup MATLAB
+        uses: matlab-actions/setup-matlab@v2-prerelease
+        with:
+          release: latest-including-prerelease
+          cache: true
+          products: ${{ env.PRODUCT_LIST }}
+ 
+      - name: Start display server (required for building doc in MATLAB)
+        run: |
+          Xvfb :99 & 
+          echo "DISPLAY=:99" >> $GITHUB_ENV
+
+      - name: Download Mac artifacts 
+        uses: actions/download-artifact@v4
+        with:   
+          pattern: build-artifacts-macos-13
+          merge-multiple: true
+      
+      - name: Download Windows artifacts 
+        uses: actions/download-artifact@v4
+        with:   
+          pattern: build-artifacts-windows-latest
+          merge-multiple: true
+     
+      - name: Download Linux artifacts 
+        uses: actions/download-artifact@v4
+        with:   
+          pattern: build-artifacts-ubuntu-latest
+          merge-multiple: true
+
+      - name: Build the toolbox, including all OS specific files 
+        uses: matlab-actions/run-build@v2
+        with:
+          tasks: release
+
+      - name: Upload Toolbox 
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mass-Spring-Damper Toolbox (All platforms)
+          path: release/Mass-Spring-Damper.mltbx
+
+
+  deploy-service:
+    # This job executes only after a successful completion of 'mex-and-unittests' job
+    needs: mex-and-unittests
+
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MATLAB
+        uses: matlab-actions/setup-matlab@v2-prerelease
+        with:
+          release: latest-including-prerelease
+          cache: true
+          products: ${{ env.PRODUCT_LIST }}
+
+      - name: Download Linux artifacts(to benefit from incremental build)
+        uses: actions/download-artifact@v4
+        with:   
+          pattern: build-artifacts-ubuntu-latest
+          merge-multiple: true
+
+      - name: Build the ctf archive and run equivalence integration tests
+        uses: matlab-actions/run-build@v2
+        with:
+          tasks: deploy
+
+      - name: Upload Production Server Archive 
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mass-Spring-Damper Production Server Archive 
+          path: results/ctf-archive

@@ -1,0 +1,67 @@
+// Function Signatures
+// To optionally specify argument types and/or sizes, search for "type"
+// and insert the appropriate specifiers inside the brackets. For example:
+//
+//    "type": ["double", "size=1,1"]
+//
+// To modify function or parameter help text, search for "purpose" and edit
+// the values.
+//
+// JSON-formatted text below this line.
+{
+    "_schemaVersion": "1.1.0",
+    "_typedefs" : {
+        "struct_design": {
+            "purpose": "Design of the Mass-Spring Damper coefficients",
+            "type": "struct",
+            "fields": [
+                {"name": "k", "type": ["double","size=1,1"]},
+                {"name": "c", "type": ["double","size=1,1"]}
+            ]
+        }
+    },
+    "simulateSystem": {
+        "inputs": [
+            {
+                "name": "design",
+                "type": "struct:struct_design",
+                "purpose": "Contains the design of the system (damping coefficient and spring stiffness)"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "x",
+                "type": "double",
+                "purpose": "Displacement"
+            },
+            {
+                "name": "t",
+                "type": "double",
+                "purpose": "time"
+            }
+        ],
+        "purpose": "Simulates a simple Mass-Spring-Damper system"
+    },
+    "springMassDamperDesign": {
+        "inputs": [
+            {
+                "name": "i0",
+                "type": [],
+                "purpose": ""
+            },
+            {
+                "name": "i1",
+                "type": [],
+                "purpose": ""
+            }
+        ],
+        "outputs": [
+            {
+                "name": "o0",
+                "type": [],
+                "purpose": ""
+            }
+        ],
+        "purpose": "   This is the proprietary design of our toolbox\n   \n   You can't see inside but I can let you know \n   how to use it if you want.\n"
+    }
+}
