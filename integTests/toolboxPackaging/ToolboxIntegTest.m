@@ -3,6 +3,10 @@ classdef ToolboxIntegTest < matlab.unittest.TestCase
     methods(TestClassSetup)
         function unloadProjectAndInstallToolbox(testCase)
             import matlab.addons.toolbox.*;
+            import matlab.unittest.fixtures.*;
+
+            testCase.applyFixture(SuppressedWarningsFixture('toolboxmanagement_matlab_api:uninstallToolbox:manualCleanupNeeded'));
+
 
             prj = currentProject;
             prjRoot = prj.RootFolder;
