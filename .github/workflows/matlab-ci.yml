@@ -16,7 +16,7 @@ env:
 jobs:
 
   mex-and-unittests:
-    # This job will run for all the OS present in the matrix
+    # This job will run for each OS present in the matrix
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-13] 
