@@ -4,7 +4,7 @@ name: Publish to pages
 on: 
   # This workflow requires enabling pages in the repository settings. 
   # Therefore not running automatically on push and pr
-  # push:                       # Uncomment to runs on push events
+  push:                       # Uncomment to runs on push events
   # pull_request:               # Runs on pull requests
   workflow_dispatch:          # Allows you to run this workflow manually from the Actions tab
 
