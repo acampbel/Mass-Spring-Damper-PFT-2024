@@ -75,25 +75,25 @@ plan("release") = matlab.buildtool.Task(Dependencies="tbxIntegTest", ...
     Description="Produce a fully qualified toolbox for release");
 
 
-% %% Build a MATLAB Production Server archive
-% %   Ad hoc task, task action defined in toolboxTask local function
-% plan("ctf").Dependencies = ["lint","test"];
-% plan("ctf").Inputs = ["code", "pcode", "buildutils/simulateSystemFunctionSignatures.json"];
-% plan("ctf").Outputs = [...
-%     "results/ctf-archive/MassSpringDamperService.ctf", ...
-%     "results/ctf-build-results.mat", ...
-%     "results/ctf-archive"];
+%% Build a MATLAB Production Server archive
+%   Ad hoc task, task action defined in toolboxTask local function
+plan("ctf").Dependencies = ["lint","test"];
+plan("ctf").Inputs = ["code", "pcode", "buildutils/simulateSystemFunctionSignatures.json"];
+plan("ctf").Outputs = [...
+    "results/ctf-archive/MassSpringDamperService.ctf", ...
+    "results/ctf-build-results.mat", ...
+    "results/ctf-archive"];
 
 
-% %% Integration tests - back-to-back equivalence tests for the production server archive
-% plan("ctfIntegTest") = TestTask("integTests/equivalence",SourceFiles=["code","pcode"], ...
-%     Description="Run integration tests against CTF archive.");
-% plan("ctfIntegTest").Inputs = [plan("ctf").Outputs, "integTests/equivalence"];
-% 
-% 
-% %% Create the deploy task - does nothing but depends on other tasks
-% plan("deploy") = matlab.buildtool.Task(Dependencies="ctfIntegTest", ...
-%     Description="Produce and test a ctf archive to deploy to a MATLAB Production Server");
+%% Integration tests - back-to-back equivalence tests for the production server archive
+plan("ctfIntegTest") = TestTask("integTests/equivalence",SourceFiles=["code","pcode"], ...
+    Description="Run integration tests against CTF archive.");
+plan("ctfIntegTest").Inputs = [plan("ctf").Outputs, "integTests/equivalence"];
+
+
+%% Create the deploy task - does nothing but depends on other tasks
+plan("deploy") = matlab.buildtool.Task(Dependencies="ctfIntegTest", ...
+    Description="Produce and test a ctf archive to deploy to a MATLAB Production Server");
 
 
 %% Produce HTML from workshop live scripts to publish to GitHub pages
@@ -161,27 +161,27 @@ matlab.addons.toolbox.packageToolbox(opts);
 end
 
 
-% %% The "ctf" task action
-% function ctfTask(context)
-% % Create a deployable archive for MATLAB Production Server
-% 
-% ctfArchive = context.Task.Outputs(1).paths;
-% ctfBuildResults = context.Task.Outputs(2).paths;
-% 
-% % Create the archive options for the build.
-% [ctfFolder, ctfFile] = fileparts(ctfArchive);
-% opts = compiler.build.ProductionServerArchiveOptions(...
-%     ["code/simulateSystem.m", "pcode/springMassDamperDesign.m"], ...
-%     FunctionSignatures="buildutils/simulateSystemFunctionSignatures.json", ...
-%     OutputDir=ctfFolder, ...
-%     ArchiveName=ctfFile, ...
-%     ObfuscateArchive="on");
-% 
-% % Build the archive
-% buildResults = compiler.build.productionServerArchive(opts);
-% 
-% save(ctfBuildResults,"buildResults");
-% end
+%% The "ctf" task action
+function ctfTask(context)
+% Create a deployable archive for MATLAB Production Server
+
+ctfArchive = context.Task.Outputs(1).paths;
+ctfBuildResults = context.Task.Outputs(2).paths;
+
+% Create the archive options for the build.
+[ctfFolder, ctfFile] = fileparts(ctfArchive);
+opts = compiler.build.ProductionServerArchiveOptions(...
+    ["code/simulateSystem.m", "pcode/springMassDamperDesign.m"], ...
+    FunctionSignatures="buildutils/simulateSystemFunctionSignatures.json", ...
+    OutputDir=ctfFolder, ...
+    ArchiveName=ctfFile, ...
+    ObfuscateArchive="on");
+
+% Build the archive
+buildResults = compiler.build.productionServerArchive(opts);
+
+save(ctfBuildResults,"buildResults");
+end
 
 
 %% The "workshop" task action
