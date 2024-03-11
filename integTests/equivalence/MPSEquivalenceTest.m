@@ -23,7 +23,7 @@ classdef MPSEquivalenceTest < matlabtest.compiler.TestCase
             % Load the data we built via the build process
             disp("Loading MPS build results")
             prj = currentProject;
-            loadedData = load(prj.RootFolder + "/results/ctf-build-results.mat");
+            loadedData = load(prj.RootFolder + "/results" + computer("arch") + "/ctf-build-results.mat");
             buildResults = loadedData.buildResults;
 
             % Execute the runtime inputs (damping) on the server
