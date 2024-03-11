@@ -75,12 +75,6 @@ jobs:
           pattern: build-artifacts-*
           merge-multiple: true
 
-      - name: Download Linux artifacts (again to ensure linux versions stomp) # Fix - should no be required
-        uses: actions/download-artifact@v4
-        with:   
-          pattern: build-artifacts-ubuntu-latest
-          merge-multiple: true
-      
       - name: Build the toolbox, including all OS specific files 
         uses: matlab-actions/run-build@v2
         with:
