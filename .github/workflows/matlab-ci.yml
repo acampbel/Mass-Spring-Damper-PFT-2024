@@ -69,19 +69,13 @@ jobs:
           Xvfb :99 & 
           echo "DISPLAY=:99" >> $GITHUB_ENV
 
-      - name: Download Mac artifacts 
+      - name: Download artifacts from all platforms
         uses: actions/download-artifact@v4
         with:   
-          pattern: build-artifacts-macos-13
+          pattern: build-artifacts-*
           merge-multiple: true
       
-      - name: Download Windows artifacts 
-        uses: actions/download-artifact@v4
-        with:   
-          pattern: build-artifacts-windows-latest
-          merge-multiple: true
-     
-      - name: Download Linux artifacts 
+      - name: Download Linux artifacts (again to ensure we have linux version when stomped)
         uses: actions/download-artifact@v4
         with:   
           pattern: build-artifacts-ubuntu-latest
