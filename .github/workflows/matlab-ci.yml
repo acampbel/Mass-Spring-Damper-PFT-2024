@@ -119,4 +119,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Mass-Spring-Damper Production Server Archive 
-          path: results/ctf-archive
+          path: results/*/ctf-archive
