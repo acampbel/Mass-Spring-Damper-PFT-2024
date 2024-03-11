@@ -7,7 +7,7 @@ plan.DefaultTasks = ["release" "deploy"];
 %% Enable cleaning derived build outputs
 plan("clean") = CleanTask;
 
-resultsFolder = "results/" + computer("arch")
+resultsFolder = "results/" + computer("arch");
 
 %% Lint the code and tests
 plan("lint") = CodeIssuesTask(Results=resultsFolder + "/code-issues.sarif");
