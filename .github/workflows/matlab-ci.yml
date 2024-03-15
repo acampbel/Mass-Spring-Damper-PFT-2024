@@ -1,5 +1,4 @@
 # This is a basic workflow to help you get started with MATLAB Actions
-
 name: MATLAB Build
 
 # Controls when the action will run. 
@@ -13,13 +12,14 @@ env:
   PRODUCT_LIST: MATLAB MATLAB_Test MATLAB_Compiler MATLAB_Compiler_SDK
   MLM_LICENSE_TOKEN: ${{secrets.MLM_LICENSE_TOKEN}}
 
+
 jobs:
 
   mex-and-unittests:
     # This job will run for each OS present in the matrix
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13] #, macos-14] 
+        os: [ubuntu-latest, windows-latest, macos-13]  
      
     # The type of runner that the job will run on
     runs-on: ${{ matrix.os }}
@@ -69,10 +69,22 @@ jobs:
           Xvfb :99 & 
           echo "DISPLAY=:99" >> $GITHUB_ENV
 
-      - name: Download artifacts from all platforms
+      - name: Download artifacts from Windows
         uses: actions/download-artifact@v4
         with:   
-          pattern: build-artifacts-*
+          pattern: build-artifacts-windows-latest
+          merge-multiple: true
+
+      - name: Download artifacts from Mac
+        uses: actions/download-artifact@v4
+        with:   
+          pattern: build-artifacts-macos-13 
+          merge-multiple: true
+
+      - name: Download artifacts from Linux
+        uses: actions/download-artifact@v4
+        with:   
+          pattern: build-artifacts-macos-13 
           merge-multiple: true
 
       - name: Build the toolbox, including all OS specific files 
@@ -86,7 +98,7 @@ jobs:
           name: Mass-Spring-Damper Toolbox (All platforms)
           path: release/Mass-Spring-Damper.mltbx
 
-
+          
   deploy-service:
     # This job executes only after a successful completion of 'mex-and-unittests' job
     needs: mex-and-unittests
