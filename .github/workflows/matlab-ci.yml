@@ -75,10 +75,16 @@ jobs:
           pattern: build-artifacts-windows-latest
           merge-multiple: true
 
-      - name: Download artifacts from Mac
+      - name: Download artifacts from Mac (Intel)
         uses: actions/download-artifact@v4
         with:   
           pattern: build-artifacts-macos-13 
+          merge-multiple: true
+
+      - name: Download artifacts from Mac (Apple Silicon)
+        uses: actions/download-artifact@v4
+        with:   
+          pattern: build-artifacts-macos-14 
           merge-multiple: true
 
       - name: Download artifacts from Linux
