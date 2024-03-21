@@ -4,12 +4,14 @@ import matlab.buildtool.tasks.*;
 plan = buildplan(localfunctions);
 plan.DefaultTasks = "release"; 
 
+resultsFolder = fullfile("results",computer("arch"));
+
 %% Enable cleaning derived build outputs
 plan("clean") = CleanTask;
 
 
 %% Lint the code and tests
-plan("lint") = CodeIssuesTask(Results="results/code-issues.sarif");
+plan("lint") = CodeIssuesTask(Results=resultsFolder + "/code-issues.sarif");
 
 
 %% Build mex files and place them in toolbox folder
@@ -27,10 +29,10 @@ plan("setupCompiler").Inputs = "buildutils/installMinGW.m";
 %% Setup test, example test, and integration test tasks
 plan("test") = TestTask("tests", ...
     SourceFiles=["code", "pcode", "mex"], ...
-    TestResults="results/test-results.html", ...
+    TestResults= resultsFolder + "/test-results.html", ...
     Dependencies="mex", ...
     Description="Run the unit tests.") ...
-    .addCodeCoverage("results/coverage/index.html", MetricLevel="mcdc");
+    .addCodeCoverage(resultsFolder + "/coverage/index.html", MetricLevel="mcdc");
 
 
 %% P-code sensitive code and grab the M1 help to ship with the p-code files
@@ -80,9 +82,9 @@ plan("release") = matlab.buildtool.Task(Dependencies="tbxIntegTest", ...
 % plan("ctf").Dependencies = ["lint","test"];
 % plan("ctf").Inputs = ["code", "pcode", "buildutils/simulateSystemFunctionSignatures.json"];
 % plan("ctf").Outputs = [...
-%     "results/ctf-archive/MassSpringDamperService.ctf", ...
-%     "results/ctf-build-results.mat", ...
-%     "results/ctf-archive"];
+%     resultsFolder + "/ctf-archive/MassSpringDamperService.ctf", ...
+%     resultsFolder + "/ctf-build-results.mat", ...
+%     resultsFolder + "/ctf-archive"];
 
 
 % %% Integration tests - back-to-back equivalence tests for the production server archive
@@ -100,7 +102,7 @@ plan("release") = matlab.buildtool.Task(Dependencies="tbxIntegTest", ...
 plan("workshop").Inputs = "workshop/**/*.mlx";
 plan("workshop").Outputs = plan("workshop").Inputs. ...
     replace(".mlx",".html"). ...
-    replace(textBoundary("start") + "workshop", "results");
+    replace(textBoundary("start") + "workshop", resultsFolder );
 
 
 end
@@ -188,7 +190,7 @@ end
 function workshopTask(context)
 % Generate html from the workshop mlx files
 
-makeFolder("results");
+makeFolder(resultsFolder);
 mlxFiles = context.Task.Inputs.paths;
 htmlFiles = context.Task.Outputs.paths;
 for idx = 1:numel(mlxFiles)
