@@ -52,7 +52,7 @@ jobs:
     # This job executes only after a successful completion of 'mex-and-unittests' job
     needs: mex-and-unittests
 
-    runs-on: macos-14
+    runs-on: ubuntu-latest
  
     steps:
       - uses: actions/checkout@v4
@@ -78,7 +78,7 @@ jobs:
       - name: Download artifacts from Linux last to guarantee incremental build
         uses: actions/download-artifact@v4
         with:   
-          pattern: build-artifacts-macos-14
+          pattern: build-artifacts-ubuntu-latest
           merge-multiple: true
 
       - name: Build the toolbox, including all OS specific files 
@@ -98,7 +98,7 @@ jobs:
     needs: mex-and-unittests
   
   
-    runs-on: ubuntu-latest
+    runs-on: macos-14
   
     steps:
       - uses: actions/checkout@v4
@@ -110,10 +110,10 @@ jobs:
           cache: true
           products: ${{ env.PRODUCT_LIST }}
   
-      - name: Download Linux artifacts(to benefit from incremental build)
+      - name: Download Mac artifacts(to benefit from incremental build)
         uses: actions/download-artifact@v4
         with:   
-          pattern: build-artifacts-ubuntu-latest
+          pattern: build-artifacts-macos-14
           merge-multiple: true
   
       - name: Build the ctf archive and run equivalence integration tests
