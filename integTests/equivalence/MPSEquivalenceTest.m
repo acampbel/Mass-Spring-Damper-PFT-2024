@@ -34,14 +34,8 @@ classdef MPSEquivalenceTest < matlabtest.compiler.TestCase
             
             % Verify server execution is equivalent to the local results
             disp("Verifying results match MATLAB results")
-            % Note: Fails due to a bug which is fixed in the R2024a GR
-            % testCase.verifyExecutionMatchesMATLAB(executionResults);
+            testCase.verifyExecutionMatchesMATLAB(executionResults);
 
-            % Verification workaround - not needed in GR. Note this
-            % solution is not only less convenient, but also does not
-            % produce diagnostics as valuable as the above method
-            [x, t] = simulateSystem(design);
-            testCase.verifyEqual(executionResults.ExecutableOutput, {x, t});
         end
     end
 end
