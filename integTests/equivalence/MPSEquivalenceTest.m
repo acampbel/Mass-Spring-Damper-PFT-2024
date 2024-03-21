@@ -10,8 +10,8 @@ classdef MPSEquivalenceTest < matlabtest.compiler.TestCase
 
     methods(TestClassSetup)
         function filterOnMac(testCase)
-           % testCase.assumeReturnsTrue(@() ~ismac, ...
-              %  "MPS equivalence tests not supported on the mac");
+            testCase.assumeReturnsTrue(@() ~ismac, ...
+                "MPS equivalence tests not supported on the mac");
         end
     end
    
