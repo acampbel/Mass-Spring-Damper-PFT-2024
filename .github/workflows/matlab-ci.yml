@@ -69,28 +69,10 @@ jobs:
           Xvfb :99 & 
           echo "DISPLAY=:99" >> $GITHUB_ENV
 
-      - name: Download artifacts from Windows
+      - name: Download artifacts from all platforms
         uses: actions/download-artifact@v4
         with:   
-          pattern: build-artifacts-windows-latest
-          merge-multiple: true
-
-      - name: Download artifacts from Mac (Intel)
-        uses: actions/download-artifact@v4
-        with:   
-          pattern: build-artifacts-macos-13 
-          merge-multiple: true
-
-      - name: Download artifacts from Mac (Apple Silicon)
-        uses: actions/download-artifact@v4
-        with:   
-          pattern: build-artifacts-macos-14 
-          merge-multiple: true
-
-      - name: Download artifacts from Linux
-        uses: actions/download-artifact@v4
-        with:   
-          pattern: build-artifacts-ubuntu-latest 
+          pattern: build-artifacts-*
           merge-multiple: true
 
       - name: Build the toolbox, including all OS specific files 
