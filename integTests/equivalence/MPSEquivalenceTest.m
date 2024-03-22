@@ -1,12 +1,4 @@
 classdef MPSEquivalenceTest < matlabtest.compiler.TestCase
-    properties(TestParameter)
-        % Can define different runtime inputs for the equivalence test
-        % For now we will just run against 1 data point
-        damping = struct(...
-            "OverDamped", 5e5, ...
-            "UnderDamped", 1e4, ...
-            "CriticallyDamped", 5.477225575051661e4)
-    end
 
     methods(TestClassSetup)
         function filterOnMac(testCase)
@@ -14,16 +6,27 @@ classdef MPSEquivalenceTest < matlabtest.compiler.TestCase
                 "MPS equivalence tests not supported on the mac");
         end
     end
-   
+
+    properties(TestParameter)
+        
+        resultsFile = {getBuildResultsFile};
+        
+        % Can define different runtime inputs for the equivalence test
+        damping = struct(...
+            "OverDamped", 5e5, ...
+            "UnderDamped", 1e4, ...
+            "CriticallyDamped", 5.477225575051661e4)
+    end
+    
+
     methods (Test)
-        function mpsShouldBeEquivalentForDamping(testCase, damping)
+        function mpsShouldBeEquivalentForDamping(testCase, resultsFile, damping)
             % Validate that MPS execution is equivalent to MATLAB for
             % various damping coefficient designs
-
-            % Load the data we built via the build process
-            disp("Loading MPS build results")
-            prj = currentProject;
-            loadedData = load(fullfile(prj.RootFolder,"results", computer("arch"), "ctf-build-results.mat"));
+            
+            % Load the results built in a prior build step
+            disp("Load the build results from the ""ctf"" task")
+            loadedData = load(resultsFile);
             buildResults = loadedData.buildResults;
 
             % Execute the runtime inputs (damping) on the server
@@ -38,4 +41,10 @@ classdef MPSEquivalenceTest < matlabtest.compiler.TestCase
 
         end
     end
+end
+
+function resultsFile = getBuildResultsFile
+prj = currentProject;
+resultsFile = fullfile(prj.RootFolder,...
+    "results", computer("arch"), "ctf-build-results.mat");
 end
