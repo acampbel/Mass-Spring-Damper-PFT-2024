@@ -44,7 +44,7 @@ jobs:
       - name: Setup MATLAB
         uses: matlab-actions/setup-matlab@v2
         with:
-          release: latest-including-prerelease
+          release: R2024a
           cache: true
           products: ${{env.PRODUCT_LIST }}
       
