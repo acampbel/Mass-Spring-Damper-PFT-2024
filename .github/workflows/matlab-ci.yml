@@ -7,7 +7,7 @@ on:
   pull_request:               # Runs on pull requests
   workflow_dispatch:          # Allows you to run this workflow manually from the Actions tab
   schedule:
-    - cron:  '38/59 20/167 * * *' # schedule a weekly-ish build to keep caches warm
+    - cron:  '7 6 * * 3' # schedule a weekly build to keep caches warm
 
 
 env:
