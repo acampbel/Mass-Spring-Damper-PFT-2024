@@ -53,8 +53,11 @@ jobs:
   release-toolbox:
     # This job executes only after a successful completion of 'mex-and-unittests' job
     needs: mex-and-unittests
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-13, macos-14] 
 
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
  
     steps:
       - uses: actions/checkout@v4
@@ -75,10 +78,10 @@ jobs:
           pattern: build-artifacts-*
           merge-multiple: true
       
-      - name: Download artifacts from Linux last to guarantee incremental build
+      - name: Download artifacts from the running platform last to guarantee incremental build
         uses: actions/download-artifact@v4
         with:   
-          pattern: build-artifacts-windows-latest
+          pattern: build-artifacts-${{ matrix.os }}
           merge-multiple: true
 
       - name: Build the toolbox, including all OS specific files 
