@@ -92,7 +92,7 @@ jobs:
       - name: Upload Toolbox 
         uses: actions/upload-artifact@v4
         with:
-          name: Mass-Spring-Damper Toolbox (All platforms)
+          name: Mass-Spring-Damper Toolbox (${{ matrix.os }})
           path: release/Mass-Spring-Damper.mltbx
 
           
