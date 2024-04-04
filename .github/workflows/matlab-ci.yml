@@ -53,12 +53,9 @@ jobs:
   release-toolbox:
     # This job executes only after a successful completion of 'mex-and-unittests' job
     needs: mex-and-unittests
-    strategy:
-      matrix:
-        os: [ubuntu-latest] 
 
-    runs-on: ${{ matrix.os }}
- 
+    runs-on:  ubuntu-latest
+    
     steps:
       - uses: actions/checkout@v4
  
@@ -68,9 +65,11 @@ jobs:
           release: R2024a
           cache: true
           products: ${{ env.PRODUCT_LIST }}
- 
-      - name: Setup headless display (required for building doc in MATLAB)
-        uses: pyvista/setup-headless-display-action@v2
+
+      - name: Start display server (required for building doc in MATLAB)
+        run: |
+          Xvfb :99 & 
+          echo "DISPLAY=:99" >> $GITHUB_ENV
 
       - name: Download artifacts from all platforms
         uses: actions/download-artifact@v4
@@ -81,7 +80,7 @@ jobs:
       - name: Download artifacts from the running platform last to guarantee incremental build
         uses: actions/download-artifact@v4
         with:   
-          pattern: build-artifacts-${{ matrix.os }}
+          pattern: build-artifacts-ubuntu-latest
           merge-multiple: true
 
       - name: Build the toolbox, including all OS specific files 
