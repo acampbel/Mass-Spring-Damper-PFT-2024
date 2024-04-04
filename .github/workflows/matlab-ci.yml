@@ -55,7 +55,7 @@ jobs:
     needs: mex-and-unittests
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13, macos-14] 
+        os: [ubuntu-latest] 
 
     runs-on: ${{ matrix.os }}
  
@@ -92,7 +92,7 @@ jobs:
       - name: Upload Toolbox 
         uses: actions/upload-artifact@v4
         with:
-          name: Mass-Spring-Damper Toolbox (${{ matrix.os }})
+          name: Mass-Spring-Damper Toolbox (All Platforms)
           path: release/Mass-Spring-Damper.mltbx
 
           
