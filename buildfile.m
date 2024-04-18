@@ -15,11 +15,11 @@ plan("lint") = CodeIssuesTask(Results=resultsFolder + "/code-issues.sarif");
 
 
 %% Build mex files and place them in toolbox folder
-plan("mex_convec") = MexTask("mex/convec.c", "toolbox", Dependencies="setupCompiler");
-plan("mex_yprime") = MexTask("mex/yprime.cpp", "toolbox", Dependencies="setupCompiler");
-plan("mex") = matlab.buildtool.Task(Dependencies=["mex_convec", "mex_yprime"], ...
-    Description="Compile all mex files");
-
+mexSrcs = matlab.buildtool.io.FileCollection.fromPaths("mex/*.c*").paths;
+[~,names] = fileparts(mexSrcs);
+mexTasks = arrayfun(@(srcFile) MexTask(srcFile,"toolbox"), mexSrcs);
+plan("mex") = matlab.buildtool.TaskGroup(mexTasks, ...
+    TaskNames=names, Dependencies="setupCompiler", Description="Compile all mex files");
 
 %% Setup the MinGW compiler
 %   Ad hoc task, task action defined in setupCompilerTask local function
