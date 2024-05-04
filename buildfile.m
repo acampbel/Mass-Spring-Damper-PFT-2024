@@ -1,4 +1,5 @@
 function plan = buildfile
+import matlab.buildtool.*;
 import matlab.buildtool.tasks.*;
 
 plan = buildplan(localfunctions);
@@ -9,7 +10,6 @@ resultsFolder = fullfile("results",computer("arch"));
 %% Enable cleaning derived build outputs
 plan("clean") = CleanTask;
 
-
 %% Lint the code and tests
 plan("lint") = CodeIssuesTask(Results=resultsFolder + "/code-issues.sarif");
 
@@ -18,8 +18,8 @@ plan("lint") = CodeIssuesTask(Results=resultsFolder + "/code-issues.sarif");
 mexSrcs = matlab.buildtool.io.FileCollection.fromPaths("mex/*.c*").paths;
 [~,names] = fileparts(mexSrcs);
 mexTasks = arrayfun(@(srcFile) MexTask(srcFile,"toolbox"), mexSrcs);
-plan("mex") = matlab.buildtool.TaskGroup(mexTasks, ...
-    TaskNames=names, Dependencies="setupCompiler", Description="Compile all mex files");
+plan("mex") = TaskGroup(mexTasks, TaskNames=names, ...
+    Dependencies="setupCompiler", Description="Compile all mex files");
 
 %% Setup the MinGW compiler
 %   Ad hoc task, task action defined in setupCompilerTask local function
@@ -73,7 +73,7 @@ plan("tbxIntegTest") = TestTask("integTests/toolboxPackaging",SourceFiles="toolb
 
 
 %% Create the release task - does nothing but depends on other tasks
-plan("release") = matlab.buildtool.Task(Dependencies="tbxIntegTest", ...
+plan("release") = Task(Dependencies="tbxIntegTest", ...
     Description="Produce a fully qualified toolbox for release");
 
 
@@ -94,7 +94,7 @@ plan("release") = matlab.buildtool.Task(Dependencies="tbxIntegTest", ...
 
 
 % %% Create the deploy task - does nothing but depends on other tasks
-% plan("deploy") = matlab.buildtool.Task(Dependencies="ctfIntegTest", ...
+% plan("deploy") = Task(Dependencies="ctfIntegTest", ...
 %     Description="Produce and test a ctf archive to deploy to a MATLAB Production Server");
 
 
