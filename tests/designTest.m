@@ -36,6 +36,9 @@ function testDampingTypes(testCase)
 [~, ~] = simulateSystem(springMassDamperDesign("criticallydamped",1000));
 end
 
+function testFailure(testCase)
+testCase.verifyFail("This failure is deliberately injected");
+end
 
 % function testWithInvalidStructInput(testCase)
 % % Test to ensure we fail gracefully with bogus input
