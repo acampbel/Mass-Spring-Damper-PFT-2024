@@ -37,7 +37,7 @@ function testDampingTypes(testCase)
 end
 
 function testFailure(testCase)
-testCase.verifyFail("This failure is deliberately injected");
+%testCase.verifyFail("This failure is deliberately injected");
 end
 
 % function testWithInvalidStructInput(testCase)
