@@ -13,14 +13,15 @@ plan("clean") = CleanTask;
 %% Lint the code and tests
 plan("lint") = CodeIssuesTask(Results=resultsFolder + "/code-issues.sarif");
 
+%% Setup the MinGW compiler
+%   Ad hoc task, task action defined in setupCompilerTask local function
+plan("setupCompiler").Inputs = "buildutils/installMinGW.m";
+
 
 %% Build all mex files and place them in the toolbox folder
 plan("mex:convec") = MexTask("mex/convec.c","toolbox");
 plan("mex:yprime") = MexTask("mex/yprime.cpp","toolbox");
-
-%% Setup the MinGW compiler
-%   Ad hoc task, task action defined in setupCompilerTask local function
-plan("setupCompiler").Inputs = "buildutils/installMinGW.m";
+plan("mex").Dependencies = "setupCompiler";
 
 
 %% Setup test, example test, and integration test tasks
