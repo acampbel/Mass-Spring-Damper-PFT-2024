@@ -38,6 +38,7 @@ jobs:
         uses: matlab-actions/run-build@v2
         with:
           tasks: test
+          build-options: -parallel
  
       - name: Uploads mex files, test results, and build traces
         uses: actions/upload-artifact@v4
