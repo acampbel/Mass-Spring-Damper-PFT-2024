@@ -11,7 +11,7 @@ on:
 
 env:
   PRODUCT_LIST: MATLAB MATLAB_Test MATLAB_Compiler MATLAB_Compiler_SDK
-  # MLM_LICENSE_TOKEN: ${{secrets.MLM_LICENSE_TOKEN}}
+  MLM_LICENSE_TOKEN: ${{secrets.MLM_LICENSE_TOKEN}}
 
 jobs:
 
