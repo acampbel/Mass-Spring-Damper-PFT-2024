@@ -10,7 +10,7 @@ on:
     - cron:  '7 6 * * 3' # schedule a weekly build to keep caches warm
 
 env:
-  PRODUCT_LIST: MATLAB MATLAB_Test MATLAB_Compiler MATLAB_Compiler_SDK Parallel_Computing_Toolbox
+  PRODUCT_LIST: MATLAB MATLAB_Test MATLAB_Compiler MATLAB_Compiler_SDK
   MLM_LICENSE_TOKEN: ${{secrets.MLM_LICENSE_TOKEN}}
 
 jobs:
