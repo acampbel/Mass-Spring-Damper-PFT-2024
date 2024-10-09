@@ -143,8 +143,7 @@ arguments
     context
     version string = "2.3.13." + string(posixtime(datetime('now')) * 1e6);
 end
-ver
-license('inuse')
+
 outputFile = context.Task.Outputs.paths;
 disp("Packaging toolbox: " + outputFile);
 makeFolder(fileparts(outputFile));
