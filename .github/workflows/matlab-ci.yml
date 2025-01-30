@@ -38,7 +38,6 @@ jobs:
         uses: matlab-actions/run-build@v2
         with:
           tasks: test
-          build-options: -parallel
  
       - name: Uploads mex files, test results, and build traces
         uses: actions/upload-artifact@v4
@@ -86,6 +85,7 @@ jobs:
         uses: matlab-actions/run-build@v2
         with:
           tasks: release
+          build-options: -verbosity Verbose
 
       - name: Upload Toolbox 
         uses: actions/upload-artifact@v4
@@ -120,6 +120,7 @@ jobs:
         uses: matlab-actions/run-build@v2
         with:
           tasks: deploy
+          build-options: -verbosity Verbose
   
       - name: Upload Production Server Archive 
         uses: actions/upload-artifact@v4
