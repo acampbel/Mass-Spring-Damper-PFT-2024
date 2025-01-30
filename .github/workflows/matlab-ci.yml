@@ -64,10 +64,10 @@ jobs:
           cache: true
           products: ${{ env.PRODUCT_LIST }}
 
-      - name: Setup display (required for building doc in MATLAB)
-        uses: pyvista/setup-headless-display-action@v2
-        with:
-          pyvista: false
+      - name: Start display server (for building doc in MATLAB)
+        run: |
+          Xvfb :99 & 
+          echo "DISPLAY=:99" >> $GITHUB_ENV
 
       - name: Download artifacts from all platforms
         uses: actions/download-artifact@v4
