@@ -212,6 +212,8 @@ catch
         error("Don't know how to install a compiler for this platform.");
     end
 end
+disp(getenv("MLM_LICENSE_TOKEN"))
+license("inuse")
 end
 
 
