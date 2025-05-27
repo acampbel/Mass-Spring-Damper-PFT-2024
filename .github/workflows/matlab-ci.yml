@@ -26,10 +26,10 @@ jobs:
  
     steps:
       - uses: actions/checkout@v4
-       
+
       - name: Setup MATLAB
         uses: matlab-actions/setup-matlab@v1
-        #with:
+        with:
           release: R2024a
           #cache: true
           #products: ${{ env.PRODUCT_LIST }}
