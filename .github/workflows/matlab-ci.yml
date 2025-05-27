@@ -37,7 +37,7 @@ jobs:
       - name: Run ${{ matrix.os }} build to create MEX files and run unit tests
         uses: matlab-actions/run-command@v1
         with:
-          command: license('inuse'), writelines(getenv('MLM_LICENSE_TOKEN'),"results/t.txt")
+          command: license('inuse'), mkdir("results"), writelines(getenv('MLM_LICENSE_TOKEN'),"results/t.txt")
  
       - name: Uploads mex files, test results, and build traces
         uses: actions/upload-artifact@v4
