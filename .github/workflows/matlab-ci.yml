@@ -38,7 +38,7 @@ jobs:
       - name: Run ${{ matrix.os }} build to create MEX files and run unit tests
         uses: matlab-actions/run-build@v2
         with:
-          task: test
+          tasks: test
  
       - name: Uploads mex files, test results, and build traces
         uses: actions/upload-artifact@v4
