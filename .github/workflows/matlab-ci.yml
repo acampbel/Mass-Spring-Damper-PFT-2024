@@ -12,7 +12,6 @@ on:
 env:
   PRODUCT_LIST: MATLAB MATLAB_Test MATLAB_Compiler MATLAB_Compiler_SDK
   MLM_LICENSE_TOKEN: ${{secrets.MLM_LICENSE_TOKEN}}
-  DAGGER_CLOUD_TOKEN: ${{secrets.DAGGER_CLOUD_TOKEN}}
 
 jobs:
 
@@ -39,6 +38,14 @@ jobs:
         uses: matlab-actions/run-build@v2
         with:
           tasks: test
+
+      - name: Integration Test
+        uses: dagger/dagger-for-github@8.0.0
+        with:
+          verb: run
+          args: matlab-batch buildtool
+          cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
+          version: "latest"
  
       - name: Uploads mex files, test results, and build traces
         uses: actions/upload-artifact@v4
