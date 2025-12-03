@@ -39,7 +39,7 @@ jobs:
         with:
           tasks: test
 
-      - run: ls -al; la -alR .buildtool
+      - run: ls -alR .buildtool
       
       - name: Uploads mex files, test results, and build traces
         uses: actions/upload-artifact@v4
@@ -77,7 +77,7 @@ jobs:
           pattern: build-artifacts-*
           merge-multiple: true
 
-      - run: ls -al; la -alR .buildtool
+      - run: ls -alR .buildtool
       
       - name: Download artifacts from the running platform last to guarantee incremental build
         uses: actions/download-artifact@v4
