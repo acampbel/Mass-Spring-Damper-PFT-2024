@@ -89,8 +89,6 @@ jobs:
           tasks: release
           build-options: -verbosity Verbose
 
-      - run: ls -alR .
-
       - name: Upload Toolbox 
         uses: actions/upload-artifact@v4
         with:
