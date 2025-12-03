@@ -38,17 +38,16 @@ jobs:
         uses: matlab-actions/run-build@v2
         with:
           tasks: test
-
-      - run: ls -alR .buildtool
       
       - name: Uploads mex files, test results, and build traces
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts-${{ matrix.os }}
+          include-hidden-files: true
           path: |
             toolbox/**/*
             results/
-            .buildtool/**/*
+            .buildtool/
             
   release-toolbox:
     # This job executes only after a successful completion of 'mex-and-unittests' job
