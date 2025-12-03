@@ -46,7 +46,7 @@ jobs:
           path: |
             toolbox/**/*
             results/
-            .buildtool/
+            .buildtool/**/*
             
   release-toolbox:
     # This job executes only after a successful completion of 'mex-and-unittests' job
