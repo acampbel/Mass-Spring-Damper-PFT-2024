@@ -115,7 +115,7 @@ exportedFiles = context.Task.Outputs.paths;
 for idx = 1:numel(mlxFiles)
     disp("Exporting " + mlxFiles(idx) + " to html");
     makeFolder(fileparts(exportedFiles(idx)));
-    export(mlxFiles(idx), exportedFiles(idx), Run=true);
+    export(mlxFiles(idx), exportedFiles(idx), Run=false); % Until 26a export bug is fixed
 end
 end
 
