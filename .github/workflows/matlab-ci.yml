@@ -62,21 +62,15 @@ jobs:
       - name: Setup MATLAB
         uses: matlab-actions/setup-matlab@v3
         with:
-          release: latest
+          release:  latest-including-prerelease
           cache: true
           products: ${{ env.PRODUCT_LIST }}
-
-      - name: Start display server (for building doc in MATLAB)
-        run: |
-          Xvfb :99 & 
-          echo "DISPLAY=:99" >> $GITHUB_ENV
 
       - name: Download artifacts from all platforms
         uses: actions/download-artifact@v8
         with:   
           pattern: build-artifacts-*
           merge-multiple: true
-
             
       - name: Download artifacts from the running platform last to guarantee incremental build
         uses: actions/download-artifact@v8
@@ -109,7 +103,7 @@ jobs:
       - name: Setup MATLAB
         uses: matlab-actions/setup-matlab@v3
         with:
-          release: latest
+          release: latest-including-prerelease
           cache: true
           products: ${{ env.PRODUCT_LIST }}
   
