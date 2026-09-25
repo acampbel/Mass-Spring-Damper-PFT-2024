@@ -20,6 +20,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+        release: [r2026b, latest]
      
     # The type of runner that the job will run on
     runs-on: ${{ matrix.os }}
@@ -30,7 +31,7 @@ jobs:
       - name: Setup MATLAB
         uses: matlab-actions/setup-matlab@v3
         with:
-          release: latest
+          release:  ${{ matrix.release }}
           cache: true
           products: ${{ env.PRODUCT_LIST }}
  
