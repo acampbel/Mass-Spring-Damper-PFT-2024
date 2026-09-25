@@ -36,12 +36,12 @@ jobs:
           products: ${{ env.PRODUCT_LIST }}
  
       - name: Run ${{ matrix.os }} build to create MEX files and run unit tests
-        uses: matlab-actions/run-build@v2
+        uses: matlab-actions/run-build@v3
         with:
           tasks: test
       
       - name: Uploads mex files, test results, and build traces
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build-artifacts-${{ matrix.os }}
           include-hidden-files: true
@@ -72,26 +72,26 @@ jobs:
           echo "DISPLAY=:99" >> $GITHUB_ENV
 
       - name: Download artifacts from all platforms
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:   
           pattern: build-artifacts-*
           merge-multiple: true
 
             
       - name: Download artifacts from the running platform last to guarantee incremental build
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:   
           pattern: build-artifacts-ubuntu-latest
           merge-multiple: true
 
       - name: Build the toolbox, including all OS specific files 
-        uses: matlab-actions/run-build@v2
+        uses: matlab-actions/run-build@v3
         with:
           tasks: release
           build-options: -verbosity Verbose
 
       - name: Upload Toolbox 
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Mass-Spring-Damper Toolbox (All Platforms)
           path: release/Mass-Spring-Damper.mltbx
@@ -114,19 +114,19 @@ jobs:
           products: ${{ env.PRODUCT_LIST }}
   
       - name: Download Linux artifacts(to benefit from incremental build)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:   
           pattern: build-artifacts-ubuntu-latest
           merge-multiple: true
   
       - name: Build the ctf archive and run equivalence integration tests
-        uses: matlab-actions/run-build@v2
+        uses: matlab-actions/run-build@v3
         with:
           tasks: deploy
           build-options: -verbosity Verbose
   
       - name: Upload Production Server Archive 
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Mass-Spring-Damper Production Server Archive 
           path: results/glnxa64/ctf-archive
