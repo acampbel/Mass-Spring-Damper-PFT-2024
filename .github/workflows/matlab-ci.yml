@@ -47,7 +47,7 @@ jobs:
         with:
           name: mex-artifacts-${{ matrix.os }}
           path: |
-            toolbox/derived
+            toolbox/**/*.mex*
             
   release-toolbox:
     # This job executes only after a successful completion of 'mex-and-unittests' job
