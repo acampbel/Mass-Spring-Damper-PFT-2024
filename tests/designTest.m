@@ -36,7 +36,7 @@ function testDampingTypes(testCase)
 [~, ~] = simulateSystem(springMassDamperDesign("criticallydamped",1000));
 end
 
-function failingTest(testCase
+function testADeliberateFailure(testCase)
 testCase.verifyEqual(2,3, "Intentional test failure");
 end
 
